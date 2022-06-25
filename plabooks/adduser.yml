@@ -1,0 +1,20 @@
+---
+- name: Adduser
+  hosts: 
+
+  tasks:
+  - name: Add the user mishagin
+    ansible.builtin.user:
+      name: mishagin
+      password: '$1$jgc6rRQU$cC4oxStaOMj7kAMkxwC1N1'
+      comment: Nikita Mishagin
+      shell: /bin/bash
+      groups: sudo
+      append: yes
+
+  - name: Add the mishagin's public key
+    authorized_key:
+      user: mishagin
+      state: present
+      key: "{{ lookup('file', '/ansible/.ssh/mishagin_id_rsa.pub') }}"
+

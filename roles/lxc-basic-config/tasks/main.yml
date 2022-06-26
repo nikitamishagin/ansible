@@ -16,18 +16,18 @@
     state: started
     enabled: yes
 
-- name: Configuration rsa-key in sshd_server
-  lineinfile:
-    path: /etc/ssh/sshd_config
-    regexp: '^#HostKey /etc/ssh/ssh_host_rsa_key'
-    line: 'HostKey /etc/ssh/ssh_host_rsa_key'
-  notify: Reload sshd.service
+- name: Replace zabbix_agentd.conf file
+  template:
+    src: templates/zabbix_agentd.conf
+    dest: /etc/zabbix/zabbix_agentd.conf
+    mode: '0644'
+  notify: Restart zabbix-agent.service
 
-- name: Disable password authentication in sshd_server
-  lineinfile:
-    path: /etc/ssh/sshd_config
-    regexp: '^#PasswordAuthentication yes'
-    line: 'PasswordAuthentication no'
+- name: Replace sshd_config file
+  template:
+    src: templates/sshd_config
+    dest: /etc/ssh/sshd_config
+    mode: '0644'
   notify: Reload sshd.service
 
 - name: Set timezone to Europe/Moscow

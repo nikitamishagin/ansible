@@ -1,5 +1,10 @@
 ---
 # handlers file for roles/lxc-basic-config
+- name: Restart zabbix-agent.service
+  systemd:
+    name: zabbix-agent.service
+    state: restarted
+
 - name: Reload sshd.service
   systemd:
     name: sshd.service

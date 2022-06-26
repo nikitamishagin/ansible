@@ -1,0 +1,6 @@
+---
+# handlers file for roles/lxc-basic-config
+- name: Reload sshd.service
+  systemd:
+    name: sshd.service
+    state: reloaded

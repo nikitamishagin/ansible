@@ -1,0 +1,36 @@
+---
+# tasks file for roles/lxc-basic-config
+- name: Update repositories cache and upgrade all packages
+  apt:
+    update_cache: yes
+    upgrade: dist
+
+- name: Install zabbix-agent
+  apt:
+    name: zabbix-agent
+  notify: Enable zabbix-agent.service
+
+- name: Enable zabbix-agent.service
+  systemd:
+    name: zabbix-agent.service
+    state: started
+    enabled: yes
+
+- name: Configuration rsa-key in sshd_server
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^#HostKey /etc/ssh/ssh_host_rsa_key'
+    line: 'HostKey /etc/ssh/ssh_host_rsa_key'
+  notify: Reload sshd.service
+
+- name: Disable password authentication in sshd_server
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^#PasswordAuthentication yes'
+    line: 'PasswordAuthentication no'
+  notify: Reload sshd.service
+
+- name: Set timezone to Europe/Moscow
+  timezone:
+    name: Europe/Moscow
+

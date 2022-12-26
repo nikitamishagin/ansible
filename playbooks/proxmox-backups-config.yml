@@ -1,0 +1,26 @@
+---
+- name: Configuration proxmox backup server
+  hosts: "{{ target_host }}"
+  vars_prompt:
+    - name: target_host
+      prompt: Please enter the target-host
+      private: no
+
+  roles:
+    - proxmox-backup-config
+    - upgrade-packages
+    - zabbix-agentd-6.2
+    - sshd-config
+    - time-config
+
+  tasks:
+  - name: Check the ansible's public key
+    authorized_key:
+      user: root
+      state: present
+      key: "{{ lookup('file', '/home/ansible/.ssh/id_rsa.pub') }}"
+
+  - name: Install parted
+    apt:
+      name: parted
+

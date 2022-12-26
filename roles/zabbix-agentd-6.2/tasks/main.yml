@@ -1,0 +1,47 @@
+---
+# tasks file for /ansible/roles/zabbix-agentd-6.2
+- name: Create a zabbix directory if it does not exist
+  file:
+    path: /etc/zabbix
+    state: directory
+    mode: '0755'
+
+- name: Replace zabbix_agentd.conf file
+  template:
+    src: templates/zabbix_agentd.conf
+    dest: /etc/zabbix/zabbix_agentd.conf
+    mode: '0644'
+  notify: Restart zabbix-agent.service
+
+- name: Instructions for Ubuntu
+  block:
+  - name: Install zabbix repository
+    apt:
+      deb: https://repo.zabbix.com/zabbix/6.2/ubuntu/pool/main/z/zabbix-release/zabbix-release_6.2-{{ zabbix_release }}%2Bubuntu{{ ansible_facts['distribution_version'] }}_all.deb
+
+  - name: Install zabbix agent
+    apt:
+      name: zabbix-agent
+      state: latest
+      update_cache: yes
+  when: ansible_facts['distribution'] == 'Ubuntu'
+
+- name: Instructions for Debian 11
+  block:
+  - name: Install zabbix repository for Debian 11
+    apt:
+      deb: https://repo.zabbix.com/zabbix/6.2/debian/pool/main/z/zabbix-release/zabbix-release_6.2-{{ zabbix_release }}%2Bdebian11_all.deb
+
+  - name: Install zabbix agent for Debian 11
+    apt:
+      name: zabbix-agent
+      state: latest
+      update_cache: yes
+  when: ansible_facts['distribution'] == 'Debian' and ansible_facts['distribution_version'] == '11'
+
+- name: Enable zabbix-agent.service
+  systemd:
+    name: zabbix-agent.service
+    state: started
+    enabled: yes
+

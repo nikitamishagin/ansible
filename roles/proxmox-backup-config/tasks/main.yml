@@ -1,0 +1,43 @@
+---
+# tasks file for /ansible/roles/proxmox-backup-config
+- name: Replace repository file
+  template:
+    src: templates/sources.list
+    dest: /etc/apt/sources.list
+    mode: '0644'
+
+- name: Replace .bashrc file
+  template:
+    src: templates/bashrc
+    dest: /root/.bashrc
+    mode: '0644'
+
+- name: Remove pbs-enterprise file
+  file:
+    path: /etc/apt/sources.list.d/pbs-enterprise.list
+    state: absent
+
+- name: Add the savchenkov's public key
+  authorized_key:
+    user: root
+    state: present
+    key: "{{ 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCjy1RD70KPP0N0MLaKjuB8kj5Vpzz5Ophb7PFAGBHThU0oGQ+MwYMygSqHRz2MPEMFayTihyDLCrA12+4sY4p+Qe1dRPXOTViJINxYnzNf9iNEY0edCnXHYIwjFY+uxIZSPN8Dzr92v5GFwVf6Md+kYkgbGyUVhBknZDpyPAysVp1DvIsCozbqsTmJ/F76Uhv2qTxKHdfpBtn8gJoKpS7zIJh5Vw8Q0lk+eKCOpWTG0NIkj+lyb8d66Q1B9r2epb0I4uG7hLnkFIk3NP4vAInDjOjFiJMWDiwPOndL+HsCfabDkf+0KbaP7QyiMiCP1gCnSKlHezEOypTR9zIPgfvtzeSg9GWJ8JyihzAVQe7oNd8bn4lngsdcypNuE2Q6uO96V7+jqNGC5naKH2Aa0x1VicJfMQyXsjzEWtZr3B6gVSuo5gic+6zl4DmvF7AOKFJGiCG0ANiECyCA4Lc207Gcgw4pTaA+Bdq9q5y0mGrGbiwe4dlgiBrj/mkKvQaXE9aupkS01fEQW3V4Vj7QIiXUAq3+XCfyalFiK2nB+brmWFcr+c0GvOcZmc/zsU6/isLbTBmIXSXRFyD9R1fo9s3T98t0seV8jFnt5i5jk3A5HvEZTxIunEyaoqbk7MO6wJ2vMBqhKMXHE9JSlaaK3WqUw2d7xh3C+ywJDAWTRpJhcQ== savchenkov@WMR-0134' }}"
+
+- name: Add the new mishagin's public key
+  authorized_key:
+    user: root
+    state: present
+    key: "{{ 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC499ZksssxclICZQJS2tn+zWN+g8fe3U69R1RL26uMczTe5MK2JpvFhqXc9hld2uThHUXUI6VzHmUquwqZrUp1CYbTxf/4zqu8DJtabQt3Xot2UmdXdzi8MFYsiRf6ENlBMy6vpWkC0fHlkrku/nnElrcy1lD8gdShQFKGT6bDImfTi8v+uG7ElDlPDKgLYbe0Wa93L43NBfjKdRzYi/1mkhSusMfS3R2T3UKeThHlqFYpGmvH1gf77Uzk8oHHflCojqoyAK10CG0uf4deE2Jf27pNOiu3G9cvuIiSuqtZn1QGIYGhjSyfNcseBygCMuvDH/cOf3Ol2/NIZqmSSjIiyoLTRVh+qqPq1psHctg+VdaRkIuuC/s6/UVvfR5vjY96NYONffyP9rXKRzc6JbYEjBzwYZweZAVbyhXcXLMvvCtNth4WS1SJXEvC0G19iN6TKBmnY9ZjqbrP08S8ZHdZtQW9KCFZqhHHtTrVPvCLFzNgT3XOSMl64OKpkAi7KiUg8daFQ3JNey82N37ggnXtsvnCE7Z7NctLz/+05XTIwm/5iqCoF9uE47BJLtY3/yyB9epkTx8Dc7/QbfQqOO/6swW45IPRWQIdf/2eKksUWjPalTmxDyXDLATKU45VK/GOavw8cWBdSGTn7y6P3tNYGrQhesEiJ2CxzZpiHr8fkw== mishagin@asuslaptop' }}"
+
+- name: Remove the old mishagin's public key
+  authorized_key:
+    user: root
+    state: absent
+    key: "{{ 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC0YrJJpTwbOLhbPSa7+XZr5iU/EQlrfCOxkLEQ2Zv+mw/ZROKNHd9hU0dUDRgmMrPYP+UsYPvt5HAyvUknCfK0PhK57dl7cYWGt8CF0tb584X9Qz9RsbFRMDQaYdpoGiGigolt4MHJEc+6EtdRtT9/sH5IR8r/yvvVxI/l334Aym0XWAYBBo/Lmlqhu4fwrx3OmC8pCjnFu0E12ua+ZXJTTBr7JSXV7TR/38BHPWshGKqax66QUj7ix5o8wIeipiIuP8D5o3AtWKfTwH+CcZie1UvTEZ9oLZ0o7GRe8wLhXHnErc7rk8cj2X5rcGIJm4WwrqYaPirBDbC0gDk+dmPXoSzTtnBLMHU3odtZFeRXCzs5k68nN+NBRDSFYFad3U+lP16Smcfwi/Aksz69a/l95SRaiYZBmcxQIB+EiIcpgtoj9ZNaU31mTy5y6BCpUOmJiwfwfDMpygeKh/2/pllz0nm7/HLYCDEkBAusvt4fJGQNZtrvroaA53td0yyntheu2+aGO4zd6WOyUbW/FnR0wX7NkM4i+M2AflCX1tzG2+ju1+g8nsYpiwTEdSApuPpTjZxWxxo5QO19Z9EZXRlza2WxcUV7YX7l0E8anTq8Jlsi1Hp3QEzwbft4H0D7vh5nvlAeSpRfr71Bw1SKvaekwD9gx4rddbvh/GKHWmWpvQ== mishagin@asuslaptop' }}"
+
+- name: Remove the old mishagin's public key
+  authorized_key:
+    user: root
+    state: absent
+    key: "{{ 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQD466q7+hNUB8l6FGP6+8bg71bQbIGtYOeZn/wGDYEk4HZubo97byh9BhBlwf7//K0nd8sMl7crxdPsrCwDY/QgFiSe9BkjaMCrR1MBcSd3YbvIyDTFdykjtizlSBx3ASmJ3uTwLvtlIChlmi2/OhvnUC1nqG38iQG/iqLWOle3FQcYCZQ0Yc7Y9EgmYnz2chzV63H+M+JGma7ZUCR9GDFQ24sPMs0QiIgY5gePEs+a5ZI+o72n+UkEW3tNHTqnuAwS3GEzF43GyYoIXuqm097XkTYj1quIom/KeLZ6jTN/6/DYDnVNQTkkopIkLMN62IIt7vdnLMCnH2k+iZpH4w1LD0i75sqiafpi3OwQWKVZ3k2TpRbCcxDTfjUD8ydeMSk1fk8F2ex9zluH5QcyuGdD6xGSaiv715tGE70EJ5iG0VcScw4x3YSlmKCYi2dSQT1QodtYqKYrAiKe6UjRVxt0rh9rG+DL5rcWaxcvnr/vXse5rRJ42te1msvMlr8ljxCVbBZPROWFymjTvtlAYu1nDNR9uAe755EUwJ/K+G1NzPMXMpe/j08xj4vQ+efa4lCfw0b12XuahVQmG98UrhjvdfiADV75rGWrNL/ZpPCpqd42xUEsjS6NGuz9wcUH51ukPRDFEjny6d7fyv6XOTpq93zdkhJjdKU1U5BThrjytw== mishagin@MacBookPro' }}"
+

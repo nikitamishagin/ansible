@@ -1,6 +1,0 @@
----
-- name: Basic configuration for the new LXC
-  hosts: 
-
-- roles:
-  -lxc-basic-config

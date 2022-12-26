@@ -1,0 +1,10 @@
+---
+# vars file for /ansible/roles/zabbix-agentd
+zabbix_release: 4
+
+
+### Configuration file template variables.
+ip_server:
+start_agents: 5
+ip_server_active:
+timeout: 10

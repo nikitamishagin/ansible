@@ -1,0 +1,19 @@
+---
+- name: Configuration proxmox nodes
+  hosts: "{{ target_host }}"
+  vars_prompt:
+    - name: target_host
+      prompt: Please enter the target-host
+      private: no
+
+  roles:
+    - proxmox-config
+#    - upgrade-packages
+#    - zabbix-agentd-6.2
+#    - time-config
+
+  tasks:
+    - name: Install parted
+      apt:
+        name: parted
+

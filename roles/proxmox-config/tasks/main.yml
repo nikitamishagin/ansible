@@ -1,18 +1,28 @@
 ---
-# tasks file for /ansible/roles/proxmox-config
 - name: Replace repository file
-  template:
-    src: templates/sources.list
+  copy:
+    src: sources.list
     dest: /etc/apt/sources.list
     mode: '0644'
-
-- name: Replace .bashrc file
-  template:
-    src: templates/bashrc
-    dest: /root/.bashrc
-    mode: '0644'
+    owner: root
+    group: root
 
 - name: Remove pve-enterprise file
   file:
     path: /etc/apt/sources.list.d/pve-enterprise.list
     state: absent
+
+- name: Remove subscribe message
+  replace:
+    path: /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js
+    regexp: '(Ext.Msg.show)(\(\{\s+title: gettext\(.No valid sub)'
+    replace: 'void\2'
+  notify: Restart pveproxy.service
+
+- name: Replace .bashrc file
+  copy:
+    src: bashrc
+    dest: /root/.bashrc
+    mode: '0644'
+    owner: root
+    group: root

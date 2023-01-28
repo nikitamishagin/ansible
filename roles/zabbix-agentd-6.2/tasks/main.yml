@@ -17,7 +17,7 @@
   when: ansible_facts['distribution'] == 'Ubuntu' and (ansible_facts['distribution_version'] == '18.04' or ansible_facts['distribution_version'] == '20.04' or ansible_facts['distribution_version'] == '22.04')
 
 - name: Import instructions for Debian
-  import_tasks: ubuntu_tasks.yml
+  import_tasks: debian_tasks.yml
   when: ansible_facts['distribution'] == 'Debian' and (ansible_facts['distribution_version'] == '10' or ansible_facts['distribution_version'] == '11')
 
 - name: Enable zabbix-agent.service

@@ -2,18 +2,30 @@
 - name: Configuration proxmox nodes
   hosts: "{{ target_host }}"
   vars_prompt:
-    - name: target_host
-      prompt: Please enter the target-host
-      private: no
+  - name: target_host
+    prompt: Please enter the target-host
+    private: no
 
   roles:
-    - proxmox-config
-#    - upgrade-packages
-#    - zabbix-agentd-6.2
-#    - time-config
+  - proxmox-config
+  - zabbix-agentd-6.2
+  - sshd-config
 
   tasks:
-    - name: Install parted
-      apt:
-        name: parted
+  - name: Set timezone to Europe/Moscow
+    timezone:
+      name: Europe/Moscow
 
+  - name: Update repositories cache and run dist-upgrade
+    apt:
+      update_cache: yes
+      upgrade: dist
+
+  - name: Clear old dependencies
+    apt:
+      autoremove: false
+
+  - name: Install parted
+    apt:
+      name: parted
+      state: latest

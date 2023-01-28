@@ -6,4 +6,4 @@ zabbix_release: 4
 server:
 start_agents: 5
 server_active:
-timeout: 10
+agt_timeout: 10

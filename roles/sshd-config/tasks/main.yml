@@ -1,14 +1,16 @@
 ---
-# tasks file for /ansible/roles/sshd-config
-- name: Generate an OpenSSH keypair
+- name: Generate the new OpenSSH keypair
   openssh_keypair:
     path: /etc/ssh/ssh_host_rsa_key
-#    force: true
-  notify: Reload sshd.service
+    size: 4096
+    type: rsa
+  notify: Restart sshd.service
 
 - name: Replace sshd_config file
-  template:
-    src: templates/sshd_config
+  copy:
+    src: sshd_config
     dest: /etc/ssh/sshd_config
     mode: '0644'
-  notify: Reload sshd.service
+    owner: root
+    group: root
+  notify: Restart sshd.service

@@ -1,17 +1,21 @@
 ---
-- name: Base configuration for the new virtual host
+- name: Base configuration for the new linux host
   hosts: "{{ target_host }}"
   vars_prompt:
   - name: target_host
     prompt: Please enter the target-host
     private: false
 
+  pre_tasks:
+  - name: Set timezone to Europe/Moscow
+    timezone:
+      name: Europe/Moscow
+
   roles:
   - upgrade-packages
   - zabbix-agentd-6.2
   - sshd-config
-  - time-config
-  - baseusers
+  - addusers
 
   tasks:
   - name: Clear old dependencies

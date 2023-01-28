@@ -1,5 +1,4 @@
 ---
-# handlers file for /ansible/roles/zabbix-agentd
 - name: Restart zabbix-agent.service
   systemd:
     name: zabbix-agent.service

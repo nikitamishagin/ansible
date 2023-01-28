@@ -13,13 +13,13 @@
     shell: /bin/bash
     comment: Nikita Mishagin
     groups:
-    - wheel
+    - sudo
   - username: sergey
     password: '$1$jgc6rRQU$cC4oxStaOMj7kAMkxwC1N1'
     shell: /bin/bash
     comment: Nikita Mishagin
     groups:
-    - wheel
+    - sudo
 
 - name: Add public keys for users
   authorized_key:

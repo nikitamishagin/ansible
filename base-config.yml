@@ -11,8 +11,12 @@
     timezone:
       name: Europe/Moscow
 
+  - name: Update repositories cache and run dist-upgrade
+    apt:
+      update_cache: yes
+      upgrade: dist
+
   roles:
-  - upgrade-packages
   - zabbix-agentd-6.2
   - sshd-config
   - addusers

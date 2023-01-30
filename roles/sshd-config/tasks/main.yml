@@ -14,3 +14,7 @@
     owner: root
     group: root
   notify: Restart sshd.service
+
+- name: Import fix sshd for LXC debian family
+  import_tasks: deb-fix.yml
+  when: ansible_facts['virtualization_type'] == 'lxc' and ansible_facts['distribution_file_variety'] == "Debian"

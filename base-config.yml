@@ -30,7 +30,7 @@
     apt:
       name: qemu-guest-agent
     notify: Start qemu agent
-    when: ansible_facts['virtualization_type'] == 'kvm'
+    when: ansible_facts['virtualization_role'] == 'guest' and ansible_facts['virtualization_type'] == 'kvm'
 
   handlers:
   - name: Start qemu agent
